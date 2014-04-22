@@ -10,7 +10,7 @@ https://rawgit.com/flamingcowtv/cameragrid/master/cameragrid.html#http://127.0.0
 Substitute your own Axis camera URLs for the URLs after the #, and separate them with commas.
 
 There are some keyboard shortcuts:
-  1-9:     select a camera
-  <esc>:   back to grid
-  s:       scan through cameras
-  <space>: pause scan
+* 1-9:     select a camera
+* <esc>:   back to grid
+* s:       scan through cameras
+* <space>: pause scan
