@@ -47,18 +47,18 @@ cameraGrid.CameraGrid = function(container, sourceUrls, resolutions, getUrl) {
   this.gridHeightCells_ = 0;
 
   /** @type {number} */
-  this.imgWidthPx_ = 0;
+  this.imgWidthPx_;
   /** @type {number} */
-  this.imgHeightPx_ = 0;
+  this.imgHeightPx_;
   /** @type {string} */
   this.constraint_ = null;
 
   /** @type {number} */
-  this.containerImgWidthPx_ = 0;
+  this.containerImgWidthPx_;
   /** @type {number} */
-  this.ctonainerImgHeightPx_ = 0;
+  this.ctonainerImgHeightPx_;
   /** @type {string} */
-  this.containerConstraint_ = null;
+  this.containerConstraint_;
 
   /** @type {number?} */
   this.selected_ = null;
@@ -232,7 +232,7 @@ cameraGrid.CameraGrid.prototype.buildStylesheet_ = function() {
  * Calculate optimal grid sizing.
  * This pile of magic math calculates the optimal grid width and height to
  * maximize the size of all video feeds while preserving their aspect ratios.
- * @returns {Object.<number, number, string, string, number, number>
+ * @returns {Object.<number, number, string, string, number, number>}
  */
 cameraGrid.CameraGrid.prototype.calculateGrid_ = function() {
   var containerWidth = this.container_.offsetWidth;
@@ -310,8 +310,7 @@ cameraGrid.CameraGrid.prototype.calculateGrid_ = function() {
 cameraGrid.CameraGrid.prototype.findMinimumResolution_ = function(tileWidth, tileHeight) {
   for (var i = 0; i < this.resolutions_.length; i++) {
     var resolution = this.resolutions_[i];
-    if (i + 1 < this.resolutions_.length &&
-        (resolution[0] < tileWidth && resolution[1] < tileHeight)) {
+    if (resolution[0] < tileWidth && resolution[1] < tileHeight) {
       continue;
     }
     return {
@@ -319,6 +318,12 @@ cameraGrid.CameraGrid.prototype.findMinimumResolution_ = function(tileWidth, til
       imgHeightPx: resolution[1],
     };
   }
+  console.log('Your screen is larger than the largest feed resolution. Images will be scaled up');
+  var lastResolution = this.resolutions_[this.resolutions_.length - 1];
+  return {
+    imgWidthPx: lastResolution[0],
+    imgHeightPx: lastResolution[1],
+  };
 };
 
 cameraGrid.CameraGrid.prototype.deletePreviousSiblings_ = function(element) {
