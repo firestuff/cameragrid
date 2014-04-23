@@ -29,7 +29,7 @@ var cameraGrid = {};
  * @param {Node} container DOM container object to hold UI
  * @param {Array.<String>} sourceUrls Array of Axis camera URLs
  * @param {Array.<Array.<number>>=} resolutions Array of [width,height] resolution tuples
- * @param {CameraGrid~getUrl=} getUrl Callback to generate URL for a given camera
+ * @param {function(String,number,number):String=} getUrl Callback to generate URL for a given camera
  */
 cameraGrid.CameraGrid = function(container, sourceUrls, resolutions, getUrl) {
   this.container_ = container;
