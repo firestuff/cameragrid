@@ -51,7 +51,7 @@ cameraGrid.CameraGrid = function(container, sourceUrls, resolutions, getUrl) {
   /** @type {number} */
   this.imgHeightPx_;
   /** @type {string} */
-  this.constraint_ = null;
+  this.constraint_;
 
   /** @type {number} */
   this.containerImgWidthPx_;
