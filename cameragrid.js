@@ -15,6 +15,9 @@ limitations under the License.
 */
 var cameraGrid = {};
 
+/*
+ * @constructor
+ */
 cameraGrid.CameraGrid = function(container, sourceUrls, resolutions, getUrl) {
   this.container_ = container;
   this.sourceUrls_ = sourceUrls;
