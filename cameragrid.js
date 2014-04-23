@@ -17,6 +17,7 @@ var cameraGrid = {};
 
 /*
  * @constructor
+ * @export
  */
 cameraGrid.CameraGrid = function(container, sourceUrls, resolutions, getUrl) {
   this.container_ = container;
