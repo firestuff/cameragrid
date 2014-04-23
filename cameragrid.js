@@ -19,21 +19,21 @@ var cameraGrid = {};
  * @constructor
  * @export
  * @param {Node} container DOM container object to hold UI
- * @param {Array.<String>} sourceUrls Array of Axis camera URLs
+ * @param {Array.<string>} sourceUrls Array of Axis camera URLs
  * @param {Array.<Array.<number>>=} resolutions Array of [width,height] resolution tuples
- * @param {function(String,number,number):String=} getUrl Callback to generate URL for a given camera
+ * @param {function(string,number,number):string=} getUrl Callback to generate URL for a given camera
  */
 cameraGrid.CameraGrid = function(container, sourceUrls, resolutions, getUrl) {
   /** @type {Node} */
   this.container_ = container;
 
-  /** @type {Array.<String>} */
+  /** @type {Array.<string>} */
   this.sourceUrls_ = sourceUrls;
 
   /** @type {Array.<Array.<number>>} */
   this.resolutions_ = resolutions || this.defaultResolutions_;
 
-  /** @type {function(String,number,number):String */
+  /** @type {function(string,number,number):string} */
   this.getUrl_ = getUrl || this.defaultGetUrl_;
 
   /** @type {number} */
@@ -50,14 +50,14 @@ cameraGrid.CameraGrid = function(container, sourceUrls, resolutions, getUrl) {
   this.imgWidthPx_ = 0;
   /** @type {number} */
   this.imgHeightPx_ = 0;
-  /** @type {String} */
+  /** @type {string} */
   this.constraint_ = null;
 
   /** @type {number} */
   this.containerImgWidthPx_ = 0;
   /** @type {number} */
   this.ctonainerImgHeightPx_ = 0;
-  /** @type {String} */
+  /** @type {string} */
   this.containerConstraint_ = null;
 
   /** @type {number?} */
@@ -98,7 +98,7 @@ cameraGrid.CameraGrid.prototype.defaultResolutions_ = [
 /**
  * Generate a URL for a given camera and (valid) resolution. This version was
  * tested with an Axis P3384-V.
- * @param {String} sourceUrl Base URL for a camera
+ * @param {string} sourceUrl Base URL for a camera
  * @param {number} width Width in pixels of a valid resolution
  * @param {number} height Height in pixels of a valid resolition
  */
@@ -173,7 +173,7 @@ cameraGrid.CameraGrid.prototype.buildCells_ = function() {
 /**
  * Add a CSS class to a node if it doesn't already have it.
  * @param {Node} node Node object to add class to
- * @param {String} className Name of class to add
+ * @param {string} className Name of class to add
  */
 cameraGrid.CameraGrid.prototype.addCSSClass_ = function(node, className) {
   var classes = node.className.split(' ').filter(function(className) { return className; });
@@ -188,7 +188,7 @@ cameraGrid.CameraGrid.prototype.addCSSClass_ = function(node, className) {
 /**
  * Remove a CSS class to a node if it has it.
  * @param {Node} node Node object to remove class from
- * @param {String} className Name of class to remove
+ * @param {string} className Name of class to remove
  */
 cameraGrid.CameraGrid.prototype.removeCSSClass_ = function(node, className) {
   var classes = node.className.split(' ').filter(function(className) { return className; });
@@ -232,7 +232,7 @@ cameraGrid.CameraGrid.prototype.buildStylesheet_ = function() {
  * Calculate optimal grid sizing.
  * This pile of magic math calculates the optimal grid width and height to
  * maximize the size of all video feeds while preserving their aspect ratios.
- * @returns {Object.<number, number, String, String, number, number>
+ * @returns {Object.<number, number, string, string, number, number>
  */
 cameraGrid.CameraGrid.prototype.calculateGrid_ = function() {
   var containerWidth = this.container_.offsetWidth;
