@@ -16,8 +16,7 @@ limitations under the License.
 var cameraGrid = {};
 
 /**
- * @name getUrl
- * @function
+ * @function CameraGrid~getUrl
  * @param {String} sourceUrl Base URL of the camera
  * @param {number} width Valid resolution width in pixels
  * @param {number} height Valid resolution height in pixels
@@ -30,7 +29,7 @@ var cameraGrid = {};
  * @param {Node} container DOM container object to hold UI
  * @param {Array.<String>} sourceUrls Array of Axis camera URLs
  * @param {Array.<Array.<number>>=} resolutions Array of [width,height] resolution tuples
- * @param {getUrl=} getUrl Callback to generate URL for a given camera
+ * @param {CameraGrid~getUrl=} getUrl Callback to generate URL for a given camera
  */
 cameraGrid.CameraGrid = function(container, sourceUrls, resolutions, getUrl) {
   this.container_ = container;
