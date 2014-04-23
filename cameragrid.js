@@ -1,42 +1,62 @@
-/*
-Copyright 2014 Ian Gulliver
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
+/**
+ * @license 
+ * Copyright 2014 Ian Gulliver
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 /**
  * @constructor
- * @param {Node} container DOM container object to hold UI
- * @param {Array.<string>} sourceUrls Array of Axis camera URLs
+ * @param {!Node} container DOM container object to hold UI
+ * @param {!Array.<string>} sourceUrls Array of Axis camera URLs
  * @param {Array.<Array.<number>>=} resolutions Array of [width,height] resolution tuples
  * @param {function(string,number,number):string=} getUrl Callback to generate URL for a given camera
+ * @struct
  */
 CameraGrid = function(container, sourceUrls, resolutions, getUrl) {
-  /** @type {Node} */
+  /**
+   * @type {Node}
+   * @const
+   */
   this.container_ = container;
 
-  /** @type {Array.<string>} */
+  /**
+   * @type {Array.<string>}
+   * @const
+   */
   this.sourceUrls_ = sourceUrls;
 
-  /** @type {Array.<Array.<number>>} */
+  /**
+   * @type {Array.<Array.<number>>}
+   * @const
+   */
   this.resolutions_ = resolutions || this.defaultResolutions_;
 
-  /** @type {function(string,number,number):string} */
+  /**
+   * @type {function(string,number,number):string}
+   * @const
+   */
   this.getUrl_ = getUrl || this.defaultGetUrl_;
 
-  /** @type {number} */
+  /**
+   * @type {number}
+   * @const
+   */
   this.tileScaleWidth_ = this.resolutions_[0][0];
-  /** @type {number} */
+  /**
+   * @type {number}
+   * @const
+   */
   this.tileScaleHeight_ = this.resolutions_[0][1];
 
   /** @type {number} */
@@ -78,9 +98,22 @@ CameraGrid = function(container, sourceUrls, resolutions, getUrl) {
 };
 
 /**
+ * Possible constraining dimensions
+ * @enum {number}
+ * @const
+ * @private
+ */
+CameraGrid.Dimension = {
+  WIDTH: 1,
+  HEIGHT: 2,
+};
+
+/**
  * Default resolution list.
  * List must be sorted ascending. All resolutions must be the same aspect ratio.
  * @type {Array.<Array.<number>>}
+ * @const
+ * @private
  */
 CameraGrid.prototype.defaultResolutions_ = [
   [ 160, 120 ],
@@ -96,9 +129,11 @@ CameraGrid.prototype.defaultResolutions_ = [
 /**
  * Generate a URL for a given camera and (valid) resolution. This version was
  * tested with an Axis P3384-V.
- * @param {string} sourceUrl Base URL for a camera
- * @param {number} width Width in pixels of a valid resolution
- * @param {number} height Height in pixels of a valid resolition
+ * @param {!string} sourceUrl Base URL for a camera
+ * @param {!number} width Width in pixels of a valid resolution
+ * @param {!number} height Height in pixels of a valid resolition
+ * @return {!string}
+ * @private
  */
 CameraGrid.prototype.defaultGetUrl_ = function(sourceUrl, width, height) {
   return sourceUrl + 'mjpg/video.mjpg?resolution=' + width + 'x' + height;
@@ -106,6 +141,7 @@ CameraGrid.prototype.defaultGetUrl_ = function(sourceUrl, width, height) {
 
 /**
  * Stop timed scanning through feeds and downres any non-selected images.
+ * @private
  */
 CameraGrid.prototype.disableScanning_ = function() {
   if (this.scanning_) {
@@ -118,7 +154,8 @@ CameraGrid.prototype.disableScanning_ = function() {
 /**
   * Set the current feed selected for full-screen display, and disable timed
   * scanning (in response to a user action that is expected to pause).
-  * @param {number} index Index into this.cells_ to select
+  * @param {!number} index Index into this.cells_ to select
+  * @private
   */
 CameraGrid.prototype.setSelectedNoScan_ = function(index) {
   this.setSelected_(index);
@@ -127,7 +164,8 @@ CameraGrid.prototype.setSelectedNoScan_ = function(index) {
 
 /**
   * Set the current feed selected for full-screen display.
-  * @param {number} index Index into this.cells_ to select
+  * @param {!number} index Index into this.cells_ to select
+  * @private
   */
 CameraGrid.prototype.setSelected_ = function(index) {
   var old_index = null;
@@ -159,6 +197,7 @@ CameraGrid.prototype.setSelected_ = function(index) {
 
 /**
  * Construct cameraGridCell options for insertion into the DOM.
+ * @private
  */
 CameraGrid.prototype.buildCells_ = function() {
   this.cells_ = [];
@@ -170,8 +209,9 @@ CameraGrid.prototype.buildCells_ = function() {
 
 /**
  * Add a CSS class to a node if it doesn't already have it.
- * @param {Node} node Node object to add class to
- * @param {string} className Name of class to add
+ * @param {!Node} node Node object to add class to
+ * @param {!string} className Name of class to add
+ * @private
  */
 CameraGrid.prototype.addCSSClass_ = function(node, className) {
   var classes = node.className.split(' ').filter(function(className) { return className; });
@@ -185,8 +225,9 @@ CameraGrid.prototype.addCSSClass_ = function(node, className) {
 
 /**
  * Remove a CSS class to a node if it has it.
- * @param {Node} node Node object to remove class from
- * @param {string} className Name of class to remove
+ * @param {!Node} node Node object to remove class from
+ * @param {!string} className Name of class to remove
+ * @private
  */
 CameraGrid.prototype.removeCSSClass_ = function(node, className) {
   var classes = node.className.split(' ').filter(function(className) { return className; });
@@ -201,6 +242,7 @@ CameraGrid.prototype.removeCSSClass_ = function(node, className) {
 
 /**
  * Construct our stylesheet and insert it into the DOM.
+ * @private
  */
 CameraGrid.prototype.buildStylesheet_ = function() {
   var style = document.createElement('style');
@@ -230,7 +272,15 @@ CameraGrid.prototype.buildStylesheet_ = function() {
  * Calculate optimal grid sizing.
  * This pile of magic math calculates the optimal grid width and height to
  * maximize the size of all video feeds while preserving their aspect ratios.
- * @returns {Object.<number, number, string, string, number, number>}
+ * @return {{
+ *   gridWidthCells: number,
+ *   gridHeightCells: number,
+ *   constraint: CameraGrid.Dimension,
+ *   containerConstraint: CameraGrid.Dimension,
+ *   cellWidthPx: number,
+ *   cellHeightPx: number
+ * }}
+ * @private
  */
 CameraGrid.prototype.calculateGrid_ = function() {
   var containerWidth = this.container_.offsetWidth;
@@ -256,7 +306,7 @@ CameraGrid.prototype.calculateGrid_ = function() {
   // 3) Minimize number of cells.
   var minCells = Number.MAX_VALUE;
   var maxScale = 0.0;
-  var chosenHeight, chosenWidth, chosenConstraint;
+  var chosenHeight, chosenWidth, chosenConstraint = CameraGrid.Dimension.HEIGHT;
   for (var i = 0; i < gridOptions.length; i++) {
     var gridOption = gridOptions[i];
     var numCells = gridOption[0] * gridOption[1];
@@ -269,10 +319,10 @@ CameraGrid.prototype.calculateGrid_ = function() {
     var scale, constraint;
     if (widthScale < heightScale) {
       scale = widthScale;
-      constraint = 'width';
+      constraint = CameraGrid.Dimension.WIDTH;
     } else {
       scale = heightScale;
-      constraint = 'height';
+      constraint = CameraGrid.Dimension.HEIGHT;
     }
     if (scale < maxScale) {
       // This would make cells smaller than another viable solution.
@@ -289,11 +339,11 @@ CameraGrid.prototype.calculateGrid_ = function() {
     maxScale = scale;
   }
 
-  return {
+  return /** @struct */ {
     gridWidthCells: chosenWidth,
     gridHeightCells: chosenHeight,
     constraint: chosenConstraint,
-    containerConstraint: scaleFactor > 1 ? 'width' : 'height',
+    containerConstraint: scaleFactor > 1 ? CameraGrid.Dimension.WIDTH : CameraGrid.Dimension.HEIGHT,
     cellWidthPx: this.tileScaleWidth_ * maxScale,
     cellHeightPx: this.tileScaleHeight_ * maxScale,
   };
@@ -301,9 +351,10 @@ CameraGrid.prototype.calculateGrid_ = function() {
 
 /**
  * Calculate minimum feed resolution that is larger than the given tile size.
- * @param {number} tileWidth Target tile width in pixels
- * @param {number} tileHeight Target tile height in pixels
- * @returns {Object.<number, number>}
+ * @param {!number} tileWidth Target tile width in pixels
+ * @param {!number} tileHeight Target tile height in pixels
+ * @return {!{imgWidthPx: number, imgHeightPx: number}}
+ * @private
  */
 CameraGrid.prototype.findMinimumResolution_ = function(tileWidth, tileHeight) {
   for (var i = 0; i < this.resolutions_.length; i++) {
@@ -311,7 +362,7 @@ CameraGrid.prototype.findMinimumResolution_ = function(tileWidth, tileHeight) {
     if (resolution[0] < tileWidth && resolution[1] < tileHeight) {
       continue;
     }
-    return {
+    return /** @struct */ {
       imgWidthPx: resolution[0],
       imgHeightPx: resolution[1],
     };
@@ -328,7 +379,8 @@ CameraGrid.prototype.findMinimumResolution_ = function(tileWidth, tileHeight) {
  * Delete all previous siblings within the parent container.
  * This is used when we've loaded a new resolution of feed and need to stop
  * the old one.
- * @param {Node} element Element to delete previous siblins of
+ * @param {!Node} element Element to delete previous siblins of
+ * @private
  */
 CameraGrid.prototype.deletePreviousSiblings_ = function(element) {
   while (element.previousSibling) {
@@ -342,7 +394,8 @@ CameraGrid.prototype.deletePreviousSiblings_ = function(element) {
  * selected for full screen. If we're scanning, we assume that all images are
  * selected for full screen to save the delay of starting the new stream each
  * time.
- * @param {number} index Index into this.cells_/this.sourceUrls_ to build.
+ * @param {!number} index Index into this.cells_/this.sourceUrls_ to build.
+ * @private
  */
 CameraGrid.prototype.buildImage_ = function(index) {
   var sourceUrl = this.sourceUrls_[index];
@@ -370,6 +423,7 @@ CameraGrid.prototype.buildImage_ = function(index) {
 
 /**
  * Create all image and container objects and add them to this.cells_.
+ * @private
  */
 CameraGrid.prototype.buildImages_ = function() {
   for (var i = 0; i < this.sourceUrls_.length; i++) {
@@ -379,6 +433,7 @@ CameraGrid.prototype.buildImages_ = function() {
 
 /**
  * Construct the grid objects in the DOM.
+ * @private
  */
 CameraGrid.prototype.buildGrid_ = function() {
   this.container_.innerHTML = '';
@@ -407,11 +462,12 @@ CameraGrid.prototype.buildGrid_ = function() {
  * then our largest feed. We need to scale the images up without breaking the
  * aspect ratio. CSS doesn't offer us a nice way to do this, so we track which
  * dimension will be the constraint and forcefully stretch the image that way.
- * @param {string} constraint Which dimension is the limit, "height" or "width"
- * @param {CSSStyleRule} rule The rule object to modify
+ * @param {!CameraGrid.Dimension} constraint Which dimension is the limit
+ * @param {!CSSStyleRule} rule The rule object to modify
+ * @private
  */
 CameraGrid.prototype.setUpscaleRule_ = function(constraint, rule) {
-  if (constraint == 'height') {
+  if (constraint == CameraGrid.Dimension.HEIGHT) {
     rule.style.minWidth = 0;
     rule.style.minHeight = '100%';
   } else {
@@ -424,6 +480,7 @@ CameraGrid.prototype.setUpscaleRule_ = function(constraint, rule) {
  * Rebuild the DOM grid if necessary.
  * Called at startup and on window resize. Avoids touching the DOM if possible
  * by checking if any of the inputs to DOM layout decisions have changed.
+ * @private
  */
 CameraGrid.prototype.rebuildIfNeeded_ = function() {
   var grid = this.calculateGrid_();
@@ -467,7 +524,8 @@ CameraGrid.prototype.rebuildIfNeeded_ = function() {
 
 /**
  * Callback for normal keys
- * @param {Event} e Event object.
+ * @param {!Event} e Event object.
+ * @private
  */
 CameraGrid.prototype.onKeyPress_ = function(e) {
   var character = String.fromCharCode(e.charCode);
@@ -509,6 +567,7 @@ CameraGrid.prototype.onKeyPress_ = function(e) {
 
 /**
  * Switch the currently selected feed with the previous in a circular fashion.
+ * @private
  */
 CameraGrid.prototype.scanLeft_ = function() {
   this.setSelected_(this.selected_ > 0 ? this.selected_ - 1 : this.cells_.length - 1);
@@ -516,6 +575,7 @@ CameraGrid.prototype.scanLeft_ = function() {
 
 /**
  * Switch the currently selected feed with the next in a circular fashion.
+ * @private
  */
 CameraGrid.prototype.scanRight_ = function() {
   this.setSelected_((this.selected_ + 1) % this.cells_.length);
@@ -523,7 +583,8 @@ CameraGrid.prototype.scanRight_ = function() {
 
 /**
  * Callback for special keys
- * @param {Event} e Event object.
+ * @param {!Event} e Event object.
+ * @private
  */
 CameraGrid.prototype.onKeyDown_ = function(e) {
   switch (e.keyCode) {
@@ -550,6 +611,7 @@ CameraGrid.prototype.onKeyDown_ = function(e) {
 
 /**
  * Callback from setInterval to switch current selected feed when scanning
+ * @private
  */
 CameraGrid.prototype.onScanTimer_ = function() {
   if (!this.scanning_ || this.selected_ == null) {
