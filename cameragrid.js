@@ -15,7 +15,7 @@ limitations under the License.
 */
 var cameraGrid = {};
 
-/*
+/**
  * @constructor
  * @export
  */
