@@ -201,10 +201,10 @@ CameraGrid.prototype.setSelected_ = function(index) {
  */
 CameraGrid.prototype.buildCells_ = function() {
   this.cells_ = [];
-  for (var i = 0; i < this.sourceUrls_.length; i++) {
+  this.sourceUrls_.forEach(function(sourceUrl) {
     var cell = document.createElement('cameraGridCell');
     this.cells_.push(cell);
-  }
+  }, this);
 };
 
 /**
@@ -307,12 +307,11 @@ CameraGrid.prototype.calculateGrid_ = function() {
   var minCells = Number.MAX_VALUE;
   var maxScale = 0.0;
   var chosenHeight, chosenWidth, chosenConstraint = CameraGrid.Dimension.HEIGHT;
-  for (var i = 0; i < gridOptions.length; i++) {
-    var gridOption = gridOptions[i];
+  gridOptions.forEach(function(gridOption) {
     var numCells = gridOption[0] * gridOption[1];
     if (numCells < numTiles) {
       // Can't fit all the tiles in (we've rounded down too far).
-      continue;
+      return;
     }
     var widthScale = (containerWidth / gridOption[0]) / this.tileScaleWidth_;
     var heightScale = (containerHeight / gridOption[1]) / this.tileScaleHeight_;
@@ -326,18 +325,18 @@ CameraGrid.prototype.calculateGrid_ = function() {
     }
     if (scale < maxScale) {
       // This would make cells smaller than another viable solution.
-      continue;
+      return;
     }
     if (scale == maxScale && numCells > minCells) {
       // Same cell size as another viable solution, but ours has more cells.
-      continue;
+      return;
     }
     chosenWidth = gridOption[0];
     chosenHeight = gridOption[1];
     chosenConstraint = constraint;
     minCells = numCells;
     maxScale = scale;
-  }
+  }, this);
 
   return /** @struct */ {
     gridWidthCells: chosenWidth,
@@ -357,16 +356,15 @@ CameraGrid.prototype.calculateGrid_ = function() {
  * @private
  */
 CameraGrid.prototype.findMinimumResolution_ = function(tileWidth, tileHeight) {
-  for (var i = 0; i < this.resolutions_.length; i++) {
-    var resolution = this.resolutions_[i];
+  this.resolutions_.forEach(function(resolution) {
     if (resolution[0] < tileWidth && resolution[1] < tileHeight) {
-      continue;
+      return;
     }
     return /** @struct */ {
       imgWidthPx: resolution[0],
       imgHeightPx: resolution[1],
     };
-  }
+  }, this);
   console.log('Your screen is larger than the largest feed resolution. Images will be scaled up');
   var lastResolution = this.resolutions_[this.resolutions_.length - 1];
   return {
