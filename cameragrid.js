@@ -382,6 +382,10 @@ CameraGrid.prototype.findMinimumResolution_ = function(tileWidth, tileHeight) {
  */
 CameraGrid.prototype.deletePreviousSiblings_ = function(element) {
   while (element.previousSibling) {
+		if (element.previousSibling.nodeName.toUpperCase() == 'IMG') {
+			// Work around Chrome bug #73395
+			element.previousSibling.src = '';
+		}
     element.parentNode.removeChild(element.previousSibling);
   }
 };
